@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Handlebars sandbox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/sunburst.min.css">
+    <style>
+        body { font-family: Georgia, serif; margin-left: auto; margin-right: auto; width: 1300px; }
+        h1 { text-align: center; }
+        textarea { width: 640px; height: 200px; }
+        #template { float: left; }
+        #context { float: right; }
+        p { clear: both; padding-top: 15px; text-align: center; }
+        div { border: 1px dashed; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
+    <script>
+        function render() {
+            try {
+                var template = Handlebars.compile($('#template').val()),
+                    context = eval("(" + $('#context').val() + ")"),
+                    html = template(context);
+                if ($("#strip")[0].checked) {
+                    html = html.replace(/\n\s*\n/g, '\n');
+                }
+                $('code').html(hljs.highlightAuto(html).value);
+                $('div').html(html);
+            } catch (error) {
+                $('code').html(error.toString());
+                $('div').html('');
+            }
+        }
+        $(document).ready(function() {
+            $('input').bind('click', render);
+            $('textarea').bind('input', render);
+            render();
+        });
+    </script>
+</head>
+<body>
+    <h1><a href="http://handlebarsjs.com/">Handlebars</a> sandbox</h1>
+    <textarea id="template" title="Template">
+<h2>{{header}}</h2>
+
+{{#if persons}}
+<ul>
+{{#persons}}
+    <li>{{name}}: <em>{{role}}</em> <small>(age: {{age}})</small></li>
+{{/persons}}
+</ul>
+{{else}}
+Nobody here.
+{{/if}}
+
+<h2>Series</h2>
+{{#if series}}
+<ul>{{#series}}
+    <li>f({{this.[0]}}) = {{this.[1]}}</li>
+{{/series}}
+</ul>
+{{else}}
+No values.
+{{/if}}</textarea>
+    <textarea id="context" title="Context">
+{
+  "header": "People",
+  "persons": [
+    {"name": "John", "role": "CEO", "age": 47},
+    {"name": "Mike", "role": "VP", "age": 53},
+    {"name": "Paul", "role": "Sales Manager", "age": 32}
+  ],
+  "series": function() {
+    var a = [], i;
+    for (i=0; i<=10; i++) a.push([i, Math.pow(2, i)]);
+    return a;
+  }
+}</textarea>
+    <p><input type="checkbox" id="strip" checked><label for="strip">Strip blank lines</label></p>
+    <pre><code class="hljs" title="Output"></code></pre>
+    <div title="Rendered"></div>
+</body>
+
+</html>
