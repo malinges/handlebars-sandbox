@@ -25,11 +25,11 @@
                 if ($("#hs-strip")[0].checked) {
                     html = html.replace(/\n\s*\n/g, '\n');
                 }
-                $('code').html(hljs.highlightAuto(html).value);
-                $('div').html(html);
+                $('#hs-output').html(hljs.highlightAuto(html).value);
+                $('#hs-rendered').html(html);
             } catch (error) {
-                $('code').html(error.toString());
-                $('div').html('');
+                $('#hs-output').html(error.toString());
+                $('#hs-rendered').html('');
             }
         }
         $(document).ready(function() {
@@ -78,7 +78,7 @@ No values.
   }
 }</textarea>
     <p id="hs-options"><input type="checkbox" id="hs-strip" checked><label for="strip">Strip blank lines</label></p>
-    <pre><code class="hljs" title="Output"></code></pre>
+    <pre><code id="hs-output" class="hljs" title="Output"></code></pre>
     <div id="hs-rendered" title="Rendered"></div>
     <a href="https://github.com/malinges/handlebars-sandbox"><img style="position: absolute; top: 0; right: 0; border: 0;" alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 </body>
