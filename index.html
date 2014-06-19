@@ -16,92 +16,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            restore();
-            render();
-            $('#hs-template, #hs-context').bind('input', saveAndRender);
-            $('#hs-strip').bind('change', saveAndRender);
-            $('#hs-reset').bind('click', reset);
-        });
-        function saveAndRender() {
-            save();
-            render();
-        }
-        function render() {
-            try {
-                var template = Handlebars.compile($('#hs-template').val()),
-                    context = eval("(" + $('#hs-context').val() + ")"),
-                    html = template(context);
-                if ($("#hs-strip")[0].checked) {
-                    html = html.replace(/\n\s*\n/g, '\n');
-                }
-                $('#hs-output').html(hljs.highlightAuto(html).value);
-                $('#hs-rendered').html(html);
-            } catch (error) {
-                $('#hs-output').html(error.toString());
-                $('#hs-rendered').html('');
-            }
-        }
-        function save() {
-            localStorage.setItem('hs-template', $('#hs-template').val());
-            localStorage.setItem('hs-context', $('#hs-context').val());
-            localStorage.setItem('hs-strip', $('#hs-strip').attr('checked'));
-        }
-        function restore() {
-            if (localStorage.getItem('hs-template') != null)
-                $('#hs-template').val(localStorage.getItem('hs-template'));
-            if (localStorage.getItem('hs-context') != null)
-                $('#hs-context').val(localStorage.getItem('hs-context'));
-            if (localStorage.getItem('hs-strip') != null)
-                $('#hs-strip').attr('checked', localStorage.getItem('hs-strip') == 'true');
-        }
-        function reset() {
-            localStorage.removeItem('hs-template');
-            localStorage.removeItem('hs-context');
-            localStorage.removeItem('hs-strip');
-            window.location = window.location; // reload
-        }
-    </script>
+    <script src="hs.js"></script>
 </head>
 <body>
     <h1 id="hs-title"><a href="http://handlebarsjs.com/">Handlebars</a> sandbox</h1>
-    <textarea id="hs-template" title="Template">
-<h2>{{header}}</h2>
-
-{{#if persons}}
-<ul>
-{{#persons}}
-    <li>{{name}}: <em>{{role}}</em> <small>(age: {{age}})</small></li>
-{{/persons}}
-</ul>
-{{else}}
-Nobody here.
-{{/if}}
-
-<h2>Series</h2>
-{{#if series}}
-<ul>{{#series}}
-    <li>f({{this.[0]}}) = {{this.[1]}}</li>
-{{/series}}
-</ul>
-{{else}}
-No values.
-{{/if}}</textarea>
-    <textarea id="hs-context" title="Context">
-{
-  "header": "People",
-  "persons": [
-    {"name": "John", "role": "CEO", "age": 47},
-    {"name": "Mike", "role": "VP", "age": 53},
-    {"name": "Paul", "role": "Sales Manager", "age": 32}
-  ],
-  "series": function() {
-    var a = [], i;
-    for (i=0; i<=10; i++) a.push([i, Math.pow(2, i)]);
-    return a;
-  }
-}</textarea>
+    <textarea id="hs-template" title="Template"></textarea>
+    <textarea id="hs-context" title="Context"></textarea>
     <p id="hs-options">
         <input type="checkbox" id="hs-strip" checked><label for="hs-strip">Strip blank lines</label>
         <input type="button" id="hs-reset" value="Reset">
