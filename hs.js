@@ -58,10 +58,10 @@ function render() {
             html = html.replace(/\n\s*\n/g, '\n');
         }
         $('#hs-output').html(hljs.highlightAuto(html).value).css('color', '');
-        $('#hs-rendered').html(html);
+        $('#hs-rendered').html(html).css('display', '');
     } catch (error) {
         $('#hs-output').html(error.toString()).css('color', 'red');
-        $('#hs-rendered').html('');
+        $('#hs-rendered').html('').css('display', 'none');
     }
 }
 
