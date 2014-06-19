@@ -57,10 +57,10 @@ function render() {
         if ($("#hs-strip")[0].checked) {
             html = html.replace(/\n\s*\n/g, '\n');
         }
-        $('#hs-output').html(hljs.highlightAuto(html).value);
+        $('#hs-output').html(hljs.highlightAuto(html).value).css('color', '');
         $('#hs-rendered').html(html);
     } catch (error) {
-        $('#hs-output').html(error.toString());
+        $('#hs-output').html(error.toString()).css('color', 'red');
         $('#hs-rendered').html('');
     }
 }
